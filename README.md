@@ -1,2 +1,2 @@
 # ExcelsiorCoreSpigot
-A Spigot based api with basic utilities.
+A Spigot based API with basic utilities.
