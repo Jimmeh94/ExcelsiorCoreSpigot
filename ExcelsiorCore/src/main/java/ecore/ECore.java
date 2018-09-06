@@ -16,6 +16,7 @@ public class ECore extends JavaPlugin {
     //TODO ServiceErrorStack and ServiceNode tick funtions
     //TODO include custom event that fires when new error stack is created for players
     //TODO to print the error to players
+    //TODO Unregister scoreboard when player leaves
 
     public static ECore INSTANCE;
 
