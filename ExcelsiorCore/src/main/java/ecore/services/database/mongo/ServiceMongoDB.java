@@ -6,7 +6,15 @@ import com.mongodb.MongoClientURI;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import ecore.ECore;
+import ecore.services.UUIDUtils;
+import ecore.services.locationUtils.ServiceLocationUtils;
+import ecore.services.nodes.Node;
+import ecore.services.nodes.Shape;
 import org.bson.Document;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,37 +90,28 @@ public class ServiceMongoDB {
             public void apply(Document document) {
                 Shape shape;
                 if(document.getInteger("shape") == 0){
-                    String[] temp = document.getString("center").split(",");
-                    Vector3d v = new Vector3d(Double.valueOf(temp[0]), Double.valueOf(temp[1]), Double.valueOf(temp[2]));
-                    shape = new ShapeCircle(v, document.getDouble("radius"), document.getBoolean("ignoreY"));
+                    shape = new Shape.ShapeCircle(ServiceLocationUtils.locationFromString(document.getString("center")), document.getDouble("radius"),
+                            document.getBoolean("ignoreY"));
                 } else {
-                    String[] left = document.getString("leftCorner").split(",");
-                    Vector3d l = new Vector3d(Double.valueOf(left[0]), Double.valueOf(left[1]), Double.valueOf(left[2]));
-                    String[] right = document.getString("rightCorner").split(",");
-                    Vector3d r = new Vector3d(Double.valueOf(right[0]), Double.valueOf(right[1]), Double.valueOf(right[2]));
-                    shape = new ShapeRectangle(l, r);
+                    shape = new Shape.ShapeRectangle(ServiceLocationUtils.locationFromString(document.getString("leftCorner")),
+                            ServiceLocationUtils.locationFromString(document.getString("rightCorner")));
                 }
 
                 Node area = new Node(UUID.fromString(document.getString("uuid")),
-                        Text.of(document.getString("name")), shape, document.getInteger("aiCap"));
-                Managers.NODES.add(area);
+                        document.getString("name"), shape);
+                ECore.INSTANCE.getNodes().add(area);
 
                 if(document.get("children") != null) {
                     for (Document child : (List<Document>) document.get("children")) {
                         Shape childShape;
                         if (child.getInteger("shape") == 0) {
-                            String[] temp = child.getString("center").split(",");
-                            Vector3d v = new Vector3d(Double.valueOf(temp[0]), Double.valueOf(temp[1]), Double.valueOf(temp[2]));
-                            childShape = new ShapeCircle(v, child.getDouble("radius"), child.getBoolean("ignoreY"));
+                            childShape = new Shape.ShapeCircle(ServiceLocationUtils.locationFromString(document.getString("center")), document.getDouble("radius"),
+                                    document.getBoolean("ignoreY"));
                         } else {
-                            String[] left = child.getString("leftCorner").split(",");
-                            Vector3d l = new Vector3d(Double.valueOf(left[0]), Double.valueOf(left[1]), Double.valueOf(left[2]));
-                            String[] right = child.getString("rightCorner").split(",");
-                            Vector3d r = new Vector3d(Double.valueOf(right[0]), Double.valueOf(right[1]), Double.valueOf(right[2]));
-                            childShape = new ShapeRectangle(l, r);
+                            childShape = new Shape.ShapeRectangle(ServiceLocationUtils.locationFromString(document.getString("leftCorner")),
+                                    ServiceLocationUtils.locationFromString(document.getString("rightCorner")));
                         }
-                        area.addChild(new PointOfInterest(UUID.fromString(document.getString("uuid")), Text.of(child.getString("name")), childShape, area,
-                                child.get("roles") == null ? null : child.getString("roles")));
+                        area.addChild(new Node(UUID.fromString(document.getString("uuid")), child.getString("name"), childShape));
                     }
                 }
             }
@@ -131,50 +130,46 @@ public class ServiceMongoDB {
         List<Document> temp = new ArrayList<>();
         MongoCollection<Document> col = database.getCollection(COLLECTION_NODES);
 
-        for(Node a: Managers.NODES.getObjects()){
-            if(col.find(eq("name", a.getDisplayName().toPlain())).first() != null){
+        for(Node a: ECore.INSTANCE.getNodes().getObjects()){
+            if(col.find(eq("name", a.getName())).first() != null){
                 //already exists
                 continue;
             }
 
             List<Document> children = new ArrayList<>();
             if(a.getChildren().size() > 0){
-                for(PointOfInterest p: a.getChildren()){
-                    Document add = new Document("name", p.getDisplayName().toPlain()).append("uuid", p.getUuid().toString());
+                for(Node p: a.getChildren()){
+                    Document add = new Document("name", p.getName()).append("uuid", p.getUuid().toString());
 
-                    if(p.getShape() instanceof ShapeCircle){
+                    if(p.getShape() instanceof Shape.ShapeCircle){
                         add.append("shape", 0)
-                                .append("center", ((ShapeCircle)p.getShape()).getCenterAsString())
-                                .append("radius", ((ShapeCircle)p.getShape()).getRadius())
-                                .append("ignoreY", ((ShapeCircle)p.getShape()).ignoreY());
+                                .append("center", ServiceLocationUtils.locationToString((p.getShape()).getCenter()))
+                                .append("radius", ((Shape.ShapeCircle)p.getShape()).getRadius())
+                                .append("ignoreY", ((Shape.ShapeCircle)p.getShape()).isIgnoreY());
                     } else {
                         add.append("shape", 1)
-                                .append("leftCorner", ((ShapeRectangle)p.getShape()).getBottomLeftAsString())
-                                .append("rightCorner", ((ShapeRectangle)p.getShape()).getTopRightAsString());
+                                .append("leftCorner", ServiceLocationUtils.locationToString(((Shape.ShapeRectangle)p.getShape()).getFirstCorner()))
+                                .append("rightCorner", ServiceLocationUtils.locationToString(((Shape.ShapeRectangle)p.getShape()).getSecondCorner()));
 
                     }
-                    if(p.getAvailableRoles() != null) {
-                        add.append("roles", p.getAvailableRolesAsString());
-                    }
+
                     children.add(add);
                 }
             }
 
-            if(a.getShape() instanceof ShapeCircle){
-                temp.add(new Document("name", a.getDisplayName().toPlain()).append("uuid", a.getUuid().toString())
+            if(a.getShape() instanceof Shape.ShapeCircle){
+                temp.add(new Document("name", a.getName()).append("uuid", a.getUuid().toString())
                         .append("shape", 0)
-                        .append("center", ((ShapeCircle)a.getShape()).getCenterAsString())
-                        .append("radius", ((ShapeCircle)a.getShape()).getRadius())
-                        .append("ignoreY", ((ShapeCircle)a.getShape()).ignoreY())
-                        .append("aiCap", a.getAiCap())
+                        .append("center", ServiceLocationUtils.locationToString((a.getShape()).getCenter()))
+                        .append("radius", ((Shape.ShapeCircle)a.getShape()).getRadius())
+                        .append("ignoreY", ((Shape.ShapeCircle)a.getShape()).isIgnoreY())
                         .append("children", children));
 
             } else {
-                temp.add(new Document("name", a.getDisplayName().toPlain())
+                temp.add(new Document("name", a.getName())
                         .append("shape", 1)
-                        .append("leftCorner", ((ShapeRectangle)a.getShape()).getBottomLeftAsString())
-                        .append("rightCorner", ((ShapeRectangle)a.getShape()).getTopRightAsString())
-                        .append("aiCap", a.getAiCap())
+                        .append("leftCorner", ServiceLocationUtils.locationToString(((Shape.ShapeRectangle)a.getShape()).getFirstCorner()))
+                        .append("rightCorner", ServiceLocationUtils.locationToString(((Shape.ShapeRectangle)a.getShape()).getSecondCorner()))
                         .append("children", children));
             }
         }

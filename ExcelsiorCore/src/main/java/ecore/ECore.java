@@ -2,6 +2,7 @@ package ecore;
 
 import ecore.services.database.mongo.ServiceMongoDB;
 import ecore.services.economy.ServiceEconomy;
+import ecore.services.errors.ServiceErrorStack;
 import ecore.services.messages.ServiceMessager;
 import ecore.services.nodes.ServiceNode;
 import ecore.services.particles.ServiceParticles;
@@ -12,6 +13,12 @@ import java.util.logging.Logger;
 
 public class ECore extends JavaPlugin {
 
+    //TODO ServiceErrorStack and ServiceNode tick funtions
+    //TODO include custom event that fires when new error stack is created for players
+    //TODO to print the error to players
+
+    public static ECore INSTANCE;
+
     private final Logger logger;
     private final ServiceMongoDB mongo;
     private final ServiceEconomy economy;
@@ -19,17 +26,22 @@ public class ECore extends JavaPlugin {
     private final ServiceNode nodes;
     private final ServiceParticles particles;
     private final ServiceScoreboard scoreboard;
+    private final ServiceErrorStack errorStack;
 
     public ECore() {
+        INSTANCE = this;
         logger = getLogger();
         economy = new ServiceEconomy();
         messager = new ServiceMessager();
         nodes = new ServiceNode();
         particles = new ServiceParticles();
         scoreboard = new ServiceScoreboard();
+        errorStack = new ServiceErrorStack();
 
         mongo = new ServiceMongoDB(getConfig().getString("database-username"), getConfig().getString("database-password"),
                 getConfig().getString("database-ip"), getConfig().getString("database-name"));
+
+        nodes.load(mongo);
     }
 
     public void shutdown(){
@@ -60,5 +72,9 @@ public class ECore extends JavaPlugin {
 
     public ServiceScoreboard getScoreboard() {
         return scoreboard;
+    }
+
+    public ServiceErrorStack getErrorStack() {
+        return errorStack;
     }
 }
