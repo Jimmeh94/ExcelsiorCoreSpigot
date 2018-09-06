@@ -1,0 +1,7 @@
+author: Jimmy
+name: ExcelsiorCore
+version: 1.0.0
+main: ecore.ECore
+depend: [ProtocolLib]
+commands:
+
