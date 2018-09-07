@@ -39,7 +39,7 @@ public class ECore extends JavaPlugin {
     private final ServiceParty party;
     private final ServiceInventory inventory;
 
-    public ECore() {
+    public ECore(String databaseUsername, String dbPassword, String dbIP, String dbName) {
         INSTANCE = this;
         logger = getLogger();
         economy = new ServiceEconomy();
@@ -52,8 +52,7 @@ public class ECore extends JavaPlugin {
         party = new ServiceParty();
         inventory = new ServiceInventory();
 
-        mongo = new ServiceMongoDB(getConfig().getString("database-username"), getConfig().getString("database-password"),
-                getConfig().getString("database-ip"), getConfig().getString("database-name"));
+        mongo = new ServiceMongoDB(databaseUsername, dbPassword, dbIP, dbName);
 
         nodes.load(mongo);
 
