@@ -1,4 +1,4 @@
-package ecore.services.messages;
+package ecore.services.messages.messagers;
 
 import net.minecraft.server.v1_12_R1.ChatMessageType;
 import net.minecraft.server.v1_12_R1.IChatBaseComponent;

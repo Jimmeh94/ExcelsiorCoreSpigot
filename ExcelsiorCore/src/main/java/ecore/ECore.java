@@ -6,8 +6,9 @@ import ecore.services.database.mongo.ServiceMongoDB;
 import ecore.services.economy.ServiceEconomy;
 import ecore.services.errors.ServiceErrorStack;
 import ecore.services.inventory.ServiceInventory;
-import ecore.services.location.ServiceLocationUtils;
 import ecore.services.messages.ServiceMessager;
+import ecore.services.messages.ServiceChannel;
+import ecore.services.messages.channels.ChatChannel;
 import ecore.services.nodes.ServiceNode;
 import ecore.services.particles.ServiceParticles;
 import ecore.services.party.ServiceParty;
@@ -38,6 +39,7 @@ public class ECore extends JavaPlugin {
     private final ServiceUser users;
     private final ServiceParty party;
     private final ServiceInventory inventory;
+    private final ServiceChannel channels;
 
     public ECore(String databaseUsername, String dbPassword, String dbIP, String dbName) {
         INSTANCE = this;
@@ -51,6 +53,7 @@ public class ECore extends JavaPlugin {
         users = new ServiceUser();
         party = new ServiceParty();
         inventory = new ServiceInventory();
+        channels = new ServiceChannel();
 
         mongo = new ServiceMongoDB(databaseUsername, dbPassword, dbIP, dbName);
 
@@ -121,5 +124,9 @@ public class ECore extends JavaPlugin {
 
     public ServiceErrorStack getErrorStack() {
         return errorStack;
+    }
+
+    public ServiceChannel getChannels() {
+        return channels;
     }
 }

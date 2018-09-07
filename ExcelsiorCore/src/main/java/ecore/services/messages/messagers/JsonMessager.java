@@ -1,4 +1,4 @@
-package ecore.services.messages;
+package ecore.services.messages.messagers;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;

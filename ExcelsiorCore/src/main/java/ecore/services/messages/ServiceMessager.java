@@ -1,6 +1,9 @@
 package ecore.services.messages;
 
 import ecore.services.errors.ErrorStackEntry;
+import ecore.services.messages.channels.ChatChannel;
+import ecore.services.messages.messagers.JsonMessager;
+import ecore.services.messages.messagers.TitleMessager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -56,11 +59,18 @@ public class ServiceMessager {
 
     }
 
+    public void sendMessageToChannel(ChatChannel chatChannel, String message, Optional<Prefix> prefix) {
+        for(UUID uuid: chatChannel.getMembers()){
+            sendMessage(Bukkit.getPlayer(uuid), message, prefix);
+        }
+    }
+
     public enum Prefix{
         ERROR(ChatColor.RED + ChatColor.BOLD.toString() + "[" + AltCodes.THICK_X.getSign() + "] "),
         INFO(ChatColor.GOLD + ChatColor.BOLD.toString() + "[!] "),
         SUCCESS(ChatColor.GREEN + ChatColor.BOLD.toString() + "[" + AltCodes.CHECKMARK.getSign() + "] "),
-        ECO(ChatColor.GOLD + ChatColor.BOLD.toString() + "[" + ChatColor.GREEN + ChatColor.BOLD.toString() + "ECO" + ChatColor.GOLD + ChatColor.BOLD.toString() + "[");
+        ECO(ChatColor.GOLD + ChatColor.BOLD.toString() + "[" + ChatColor.GREEN + ChatColor.BOLD.toString() + "ECO" + ChatColor.GOLD + ChatColor.BOLD.toString() + "] "),
+        CHAT(ChatColor.GOLD + ChatColor.BOLD.toString() + "[" + ChatColor.GRAY + ChatColor.BOLD.toString() + "CHAT" + ChatColor.GOLD + ChatColor.BOLD.toString() + "] ");
         private String text;
 
         Prefix(String text){this.text = text;}
