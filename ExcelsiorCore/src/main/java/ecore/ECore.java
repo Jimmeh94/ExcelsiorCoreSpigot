@@ -2,6 +2,7 @@ package ecore;
 
 import ecore.events.InventoryEvents;
 import ecore.events.PlayerEvents;
+import ecore.services.bossbar.ServiceBossBar;
 import ecore.services.database.mongo.ServiceMongoDB;
 import ecore.services.economy.ServiceEconomy;
 import ecore.services.errors.ServiceErrorStack;
@@ -40,6 +41,7 @@ public class ECore extends JavaPlugin {
     private final ServiceParty party;
     private final ServiceInventory inventory;
     private final ServiceChannel channels;
+    private final ServiceBossBar bossBar;
 
     public ECore(String databaseUsername, String dbPassword, String dbIP, String dbName) {
         INSTANCE = this;
@@ -54,6 +56,7 @@ public class ECore extends JavaPlugin {
         party = new ServiceParty();
         inventory = new ServiceInventory();
         channels = new ServiceChannel();
+        bossBar = new ServiceBossBar();
 
         mongo = new ServiceMongoDB(databaseUsername, dbPassword, dbIP, dbName);
 
@@ -84,6 +87,10 @@ public class ECore extends JavaPlugin {
 
     private void registerCommands() {
 
+    }
+
+    public ServiceBossBar getBossBar() {
+        return bossBar;
     }
 
     public ServiceParty getParty() {
