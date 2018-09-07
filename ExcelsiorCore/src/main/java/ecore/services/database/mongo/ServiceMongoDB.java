@@ -192,4 +192,7 @@ public class ServiceMongoDB {
         return (Document)document.get(field);
     }
 
+    public MongoClient getClient() {
+        return client;
+    }
 }
