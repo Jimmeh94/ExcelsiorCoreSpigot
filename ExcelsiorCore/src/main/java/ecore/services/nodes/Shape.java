@@ -1,6 +1,6 @@
 package ecore.services.nodes;
 
-import ecore.services.locationUtils.ServiceLocationUtils;
+import ecore.services.location.ServiceLocationUtils;
 import org.bukkit.Location;
 
 public abstract class Shape {

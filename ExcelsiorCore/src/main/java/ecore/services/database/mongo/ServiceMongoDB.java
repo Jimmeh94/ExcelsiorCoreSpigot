@@ -8,13 +8,10 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import ecore.ECore;
 import ecore.services.UUIDUtils;
-import ecore.services.locationUtils.ServiceLocationUtils;
+import ecore.services.location.ServiceLocationUtils;
 import ecore.services.nodes.Node;
 import ecore.services.nodes.Shape;
 import org.bson.Document;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
