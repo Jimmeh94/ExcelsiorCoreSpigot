@@ -11,6 +11,11 @@ public class PlayerInfo {
     private UUID player;
     private ServiceParticles.ParticleModifier particleModifier;
 
+    public PlayerInfo(UUID player, ServiceParticles.ParticleModifier modifier) {
+        this.player = player;
+        this.particleModifier = modifier;
+    }
+
     public UUID getUUID() {
         return player;
     }
