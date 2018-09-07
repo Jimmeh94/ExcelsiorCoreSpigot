@@ -8,6 +8,9 @@ import org.bukkit.ChatColor;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * A basic account that keeps track of an entity's money
+ */
 public class EconomyAccount {
 
     private UUID owner;

@@ -12,6 +12,7 @@ import ecore.services.location.ServiceLocationUtils;
 import ecore.services.nodes.Node;
 import ecore.services.nodes.Shape;
 import org.bson.Document;
+import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,9 @@ import java.util.UUID;
 
 import static com.mongodb.client.model.Filters.eq;
 
+/**
+ * Connects to the given MongoDB database and provides a connected MongoClient for custom writing and reading
+ */
 public class ServiceMongoDB {
 
     public static final String COLLECTION_NODES = "nodes";

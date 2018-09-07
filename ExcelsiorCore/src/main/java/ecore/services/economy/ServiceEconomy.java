@@ -1,6 +1,8 @@
 package ecore.services.economy;
 
 import ecore.ECore;
+import ecore.events.CustomEvent;
+import ecore.events.ServiceEconomyEvent;
 import ecore.services.Service;
 import ecore.services.errors.ErrorStackEntry;
 import ecore.services.messages.ServiceMessager;
@@ -11,6 +13,9 @@ import org.bukkit.entity.Player;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * A service that provides generic economic functions
+ */
 public class ServiceEconomy extends Service<EconomyAccount> {
 
     public Optional<EconomyAccount> findAccount(UUID uuid){
@@ -53,6 +58,8 @@ public class ServiceEconomy extends Service<EconomyAccount> {
         Player pOne = Bukkit.getPlayer(one), pTwo = Bukkit.getPlayer(two);
         ECore.INSTANCE.getMessager().sendMessage(pOne, ChatColor.GREEN + "You transferred $" + amount + " to " + pTwo.getDisplayName(), Optional.of(ServiceMessager.Prefix.SUCCESS));
         ECore.INSTANCE.getMessager().sendMessage(pTwo, ChatColor.GREEN + "You received $" + amount + " from " + pOne.getDisplayName(), Optional.of(ServiceMessager.Prefix.SUCCESS));
+
+        Bukkit.getPluginManager().callEvent(new ServiceEconomyEvent.ServiceEconomyPaymentEvent(CustomEvent.SERVER_CAUSE, eOne.get(), eTwo.get()));
 
         return true;
     }

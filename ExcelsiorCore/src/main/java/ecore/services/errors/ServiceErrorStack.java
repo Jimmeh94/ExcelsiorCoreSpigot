@@ -4,6 +4,10 @@ import ecore.services.Service;
 
 import java.util.Optional;
 
+/**
+ * A service that provides basic functionality for ErrorStackEntry's. You can provide an ErrorStackEntry to the
+ * SerivceMessager to easily have it displayed to the players involved.
+ */
 public class ServiceErrorStack extends Service<ErrorStackEntry> {
 
     public Optional<ErrorStackEntry> getMostRecentError(){

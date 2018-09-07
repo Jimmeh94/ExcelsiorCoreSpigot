@@ -1,6 +1,8 @@
 package ecore.services.bossbar;
 
 import ecore.ECore;
+import ecore.events.CustomEvent;
+import ecore.events.ServiceBossBarCreatedEvent;
 import ecore.services.Service;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
@@ -12,6 +14,9 @@ import org.bukkit.entity.Player;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Allows easy creation of a boss bar, assign it to an owner, remove and manipulate it
+ */
 public class ServiceBossBar extends Service<ServiceBossBar.BossBarPair> {
 
     public BossBarBuilder getBuilder(){return new BossBarBuilder();}
@@ -94,7 +99,14 @@ public class ServiceBossBar extends Service<ServiceBossBar.BossBarPair> {
             b.setProgress(progress);
             b.setVisible(true);
 
-            ECore.INSTANCE.getBossBar().add(new BossBarPair(owner, b));
+            Optional<BossBarPair> owned = ECore.INSTANCE.getBossBar().getBossBarPair(owner);
+            if(owned.isPresent()){
+                ECore.INSTANCE.getBossBar().removeBar(owner);
+            }
+
+            BossBarPair pair = new BossBarPair(owner, b);
+            ECore.INSTANCE.getBossBar().add(pair);
+            Bukkit.getPluginManager().callEvent(new ServiceBossBarCreatedEvent(CustomEvent.SERVER_CAUSE, pair));
         }
     }
 
