@@ -25,7 +25,8 @@ public class Scoreboard {
         preset = new DefaultPreset(owner);
         updatePreset();
 
-        scoreboard.registerNewObjective("side", "dummy", preset.getScore(0)).setDisplaySlot(DisplaySlot.SIDEBAR);
+        scoreboard.registerNewObjective("side", "dummy").setDisplaySlot(DisplaySlot.SIDEBAR);
+        scoreboard.getObjective(DisplaySlot.SIDEBAR).setDisplayName(preset.getScore(0));
 
         for(int i = 1; i < preset.getOldSnapshot().size(); i++){
             Score score = scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(preset.getScore(i));
@@ -93,6 +94,7 @@ public class Scoreboard {
                 objective.getScore(preset.getScore(i)).setScore(16 - i);
             }
         }
+        objective.setDisplayName(preset.getScore(0));
     }
 
     public ScoreboardPreset getPreset() {
