@@ -1,6 +1,5 @@
 package ecore.services.scoreboard;
 
-import ecore.services.scoreboard.presets.DefaultPreset;
 import ecore.services.scoreboard.presets.ScoreboardPreset;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -8,21 +7,19 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 
-import java.util.Arrays;
-
 public class Scoreboard {
 
     private Player owner;
     private ScoreboardPreset preset;
 
-    public Scoreboard(Player player){
+    public Scoreboard(Player player, ScoreboardPreset defaultPreset){
         owner = player;
 
         org.bukkit.scoreboard.Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
 
         owner.getPlayer().setScoreboard(scoreboard);
 
-        preset = new DefaultPreset(owner);
+        preset = defaultPreset;
         updatePreset();
 
         scoreboard.registerNewObjective("side", "dummy").setDisplaySlot(DisplaySlot.SIDEBAR);

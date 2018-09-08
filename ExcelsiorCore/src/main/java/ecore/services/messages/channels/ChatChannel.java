@@ -55,11 +55,15 @@ public abstract class ChatChannel {
         if(!members.contains(uuid)){
             members.add(uuid);
             ECore.INSTANCE.getMessager().sendMessage(Bukkit.getPlayer(uuid), welcomeMessage, Optional.of(ServiceMessager.Prefix.CHAT));
+            PlayerInfo playerInfo = ECore.INSTANCE.getUsers().findPlayerInfo(uuid).get();
+            if(playerInfo.getCurrentChatChannel() == null){
+                playerInfo.setCurrentChatChannel(this);
+            }
         }
     }
 
     public void sendMessage(String message){
-        String prefix = ChatColor.GOLD + ChatColor.BOLD.toString() + "[" + name + ChatColor.GOLD + ChatColor.BOLD.toString() + "] ";
+        String prefix = ChatColor.GRAY + "[" + name + ChatColor.GRAY + "] " + ChatColor.GRAY;
         ECore.INSTANCE.getMessager().sendMessageToChannel(this, prefix + message, Optional.empty());
     }
 

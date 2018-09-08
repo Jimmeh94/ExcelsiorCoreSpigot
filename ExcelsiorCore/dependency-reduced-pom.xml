@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.excelsiormc</groupId>
   <artifactId>ExcelsiorCore</artifactId>
-  <version>1.0.0</version>
+  <version>0.0.1</version>
   <build>
     <plugins>
       <plugin>
