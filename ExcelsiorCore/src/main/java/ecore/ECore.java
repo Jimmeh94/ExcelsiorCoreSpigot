@@ -15,6 +15,7 @@ import ecore.services.particles.ServiceParticles;
 import ecore.services.party.ServiceParty;
 import ecore.services.scoreboard.ServiceScoreboard;
 import ecore.services.user.ServiceUser;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Logger;
@@ -74,6 +75,12 @@ public class ECore extends JavaPlugin {
         if(mongo != null && mongo.isConnected()){
             mongo.close();
         }
+    }
+
+    public void playerQuit(Player player){
+        economy.remove(player);
+        users.remove(player);
+        channels.removePlayerFromAllChannels(player);
     }
 
     private void registerRunnables() {

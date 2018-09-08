@@ -44,4 +44,11 @@ public class ServiceChannel extends Service<ChatChannel> {
         chatChannel.add(uuid);
     }
 
+    public void removePlayerFromAllChannels(Player player) {
+        for(ChatChannel c: objects){
+            if(c.isMember(player.getUniqueId())){
+                c.remove(player.getUniqueId());
+            }
+        }
+    }
 }

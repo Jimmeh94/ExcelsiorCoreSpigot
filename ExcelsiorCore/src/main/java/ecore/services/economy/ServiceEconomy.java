@@ -64,4 +64,11 @@ public class ServiceEconomy extends Service<EconomyAccount> {
         return true;
     }
 
+    public void remove(Player player) {
+        for(EconomyAccount e: objects){
+            if(e.isOwner(player.getUniqueId())){
+                objects.remove(e);
+            }
+        }
+    }
 }

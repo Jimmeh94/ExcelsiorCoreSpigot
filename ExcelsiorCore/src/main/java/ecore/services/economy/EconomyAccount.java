@@ -19,6 +19,8 @@ public class EconomyAccount {
     public EconomyAccount(UUID owner, double balance) {
         this.owner = owner;
         this.balance = balance;
+
+        ECore.INSTANCE.getEconomy().add(this);
     }
 
     public boolean canAfford(double cost){
