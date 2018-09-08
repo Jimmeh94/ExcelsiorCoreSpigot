@@ -29,21 +29,22 @@ public class ECore extends JavaPlugin {
 
     public static ECore INSTANCE;
 
-    private final Logger logger;
-    private final ServiceMongoDB mongo;
-    private final ServiceEconomy economy;
-    private final ServiceMessager messager;
-    private final ServiceNode nodes;
-    private final ServiceParticles particles;
-    private final ServiceScoreboard scoreboard;
-    private final ServiceErrorStack errorStack;
-    private final ServiceUser users;
-    private final ServiceParty party;
-    private final ServiceInventory inventory;
-    private final ServiceChannel channels;
-    private final ServiceBossBar bossBar;
+    private Logger logger;
+    private ServiceMongoDB mongo;
+    private ServiceEconomy economy;
+    private ServiceMessager messager;
+    private ServiceNode nodes;
+    private ServiceParticles particles;
+    private ServiceScoreboard scoreboard;
+    private ServiceErrorStack errorStack;
+    private ServiceUser users;
+    private ServiceParty party;
+    private ServiceInventory inventory;
+    private ServiceChannel channels;
+    private ServiceBossBar bossBar;
 
-    public ECore(String databaseUsername, String dbPassword, String dbIP, String dbName) {
+    @Override
+    public void onEnable(){
         INSTANCE = this;
         logger = getLogger();
         economy = new ServiceEconomy();
@@ -58,7 +59,8 @@ public class ECore extends JavaPlugin {
         channels = new ServiceChannel();
         bossBar = new ServiceBossBar();
 
-        mongo = new ServiceMongoDB(databaseUsername, dbPassword, dbIP, dbName);
+        mongo = new ServiceMongoDB(getConfig().getString("database-username"), getConfig().getString("database-password"),
+                getConfig().getString("database-ip"), getConfig().getString("database-name"));
 
         nodes.load(mongo);
 
@@ -67,7 +69,8 @@ public class ECore extends JavaPlugin {
         registerRunnables();
     }
 
-    public void shutdown(){
+    @Override
+    public void onDisable(){
         if(mongo != null && mongo.isConnected()){
             mongo.close();
         }

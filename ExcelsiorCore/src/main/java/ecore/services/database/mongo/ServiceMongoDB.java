@@ -36,6 +36,7 @@ public class ServiceMongoDB {
         this.password = password;
         this.ip = ip;
         this.databaseName = databaseName;
+        openConnection();
     }
 
     public void openConnection(){
