@@ -9,7 +9,7 @@ public abstract class CustomEvent extends Event {
 
     private String cause;
 
-    protected static final HandlerList handlers = new HandlerList();
+    private static final HandlerList handlers = new HandlerList();
 
     public CustomEvent(String cause){
         this.cause = cause;
@@ -23,6 +23,8 @@ public abstract class CustomEvent extends Event {
     public HandlerList getHandlers() {
         return handlers;
     }
+
+    public static HandlerList getHandlerList(){return handlers;}
 
     public static abstract class ServiceEvent extends CustomEvent{
 

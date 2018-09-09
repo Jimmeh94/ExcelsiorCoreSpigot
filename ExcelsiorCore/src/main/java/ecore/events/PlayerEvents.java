@@ -1,6 +1,7 @@
 package ecore.events;
 
 import ecore.ECore;
+import ecore.services.errors.ErrorStackEntry;
 import ecore.services.messages.ServiceMessager;
 import ecore.services.user.PlayerInfo;
 import org.bukkit.ChatColor;
@@ -21,8 +22,8 @@ public class PlayerEvents implements Listener {
         if(temp.isPresent()){
             temp.get().getCurrentChatChannel().sendMessage(event.getMessage());
         } else {
-            ECore.INSTANCE.getMessager().sendMessage(event.getPlayer(), ChatColor.RED + "Your player info wasn't found when trying to send chat. Let staff know.",
-                    Optional.of(ServiceMessager.Prefix.ERROR));
+            ECore.INSTANCE.getErrorStack().add(new ErrorStackEntry(ChatColor.RED + "Your player info wasn't found when trying to send chat. Let staff know.",
+                    event.getPlayer().getUniqueId()));
         }
     }
 

@@ -24,6 +24,8 @@ import java.util.logging.Logger;
 
 public class ECore extends JavaPlugin {
 
+    //TODO add option registry of constant time of day event listener and weather too
+
     public static ECore INSTANCE;
 
     private Logger logger;

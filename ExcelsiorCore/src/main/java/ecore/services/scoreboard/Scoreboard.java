@@ -44,9 +44,9 @@ public class Scoreboard {
         Objective objective = owner.getPlayer().getScoreboard().getObjective(DisplaySlot.SIDEBAR);
         objective.setDisplayName(preset.getScore(0));
 
-        /*for(int i = 0; i < this.preset.getOldSnapshot().size(); i++){
-            objective.removeScore(this.preset.getOldSnapshot().get(i));
-        }*/
+        for(int i = 0; i < this.preset.getOldSnapshot().size(); i++){
+            objective.getScoreboard().resetScores(this.preset.getOldSnapshot().get(i));
+        }
 
         this.preset = preset;
         updateScoreboard();
@@ -64,32 +64,11 @@ public class Scoreboard {
 
         //we are to assume that the lines of the snapshot match the lines of the current sAurelioss
         //starting at 1 because 0 is the title
-        if(preset.getOldSnapshot().size() == preset.getScores().size()) {
-
-            /*for (int i = 1; i < preset.getOldSnapshot().size(); i++) {
-                //For when setting up the scoreboard, if the line is blank or doesn't exist, add it
-                if (!objective.hasScore(preset.getOldSnapshot().get(i)) && !objective.hasScore(preset.getScore(i))) {
-                    objective.getOrCreateScore(preset.getScore(i)).setScore(16 - i);
-                }
-                if (!preset.getOldSnapshot().get(i).equals(preset.getScore(i))) {
-                    objective.removeScore(preset.getOldSnapshot().get(i));
-                    objective.getOrCreateScore(preset.getScore(i)).setScore(16 - i);
-                }
-            }*/
-
-            //we are to assume that the lines of the snapshot match the lines of the current scores
-            //starting at 1 because 0 is the title
-            for(int i = 1; i < preset.getOldSnapshot().size(); i++){
-                if(!preset.getOldSnapshot().get(i).equals(preset.getScore(i))){
-                    objective.getScoreboard().resetScores(this.preset.getOldSnapshot().get(i));
-                    objective.getScore(preset.getScore(i)).setScore(16 - i);
-                }
-            }
-
-        } else {
-            for (int i = 1; i < preset.getScores().size(); i++) {
-                objective.getScore(preset.getScore(i)).setScore(16 - i);
-            }
+        for (int i = 1; i < preset.getOldSnapshot().size(); i++) {
+            objective.getScoreboard().resetScores(preset.getOldSnapshot().get(i));
+        }
+        for(int i = 1; i < preset.getScores().size(); i++){
+            objective.getScore(preset.getScore(i)).setScore(16 - i);
         }
         objective.setDisplayName(preset.getScore(0));
     }
