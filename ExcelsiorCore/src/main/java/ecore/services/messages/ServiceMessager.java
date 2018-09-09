@@ -70,7 +70,8 @@ public class ServiceMessager {
         INFO(ChatColor.GOLD + ChatColor.BOLD.toString() + "[!] "),
         SUCCESS(ChatColor.GREEN + ChatColor.BOLD.toString() + "[" + AltCodes.CHECKMARK.getSign() + "] "),
         ECO(ChatColor.GOLD + ChatColor.BOLD.toString() + "[" + ChatColor.GREEN + ChatColor.BOLD.toString() + "ECO" + ChatColor.GOLD + ChatColor.BOLD.toString() + "] "),
-        CHAT(ChatColor.GOLD + ChatColor.BOLD.toString() + "[" + ChatColor.GRAY + ChatColor.BOLD.toString() + "CHAT" + ChatColor.GOLD + ChatColor.BOLD.toString() + "] ");
+        CHAT(ChatColor.GOLD + ChatColor.BOLD.toString() + "[" + ChatColor.GRAY + ChatColor.BOLD.toString() + "CHAT" + ChatColor.GOLD + ChatColor.BOLD.toString() + "] "),
+        DUEL(ChatColor.GRAY + ChatColor.BOLD.toString() + "[" + ChatColor.RED + ChatColor.BOLD.toString() + "DUEL" + ChatColor.GRAY + ChatColor.BOLD.toString() + "] ");
         private String text;
 
         Prefix(String text){this.text = text;}
