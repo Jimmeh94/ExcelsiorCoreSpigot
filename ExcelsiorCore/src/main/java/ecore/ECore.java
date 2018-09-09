@@ -2,6 +2,8 @@ package ecore;
 
 import ecore.events.InventoryEvents;
 import ecore.events.PlayerEvents;
+import ecore.runnables.TimerErrorStack;
+import ecore.runnables.TimerNode;
 import ecore.services.bossbar.ServiceBossBar;
 import ecore.services.database.mongo.ServiceMongoDB;
 import ecore.services.economy.ServiceEconomy;
@@ -21,12 +23,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.logging.Logger;
 
 public class ECore extends JavaPlugin {
-
-    //TODO ServiceErrorStack and ServiceNode tick funtions
-    //TODO include custom event that fires when new error stack is created for players
-    //TODO to print the error to players
-    //TODO Unregister scoreboard when player leaves
-    //TODO Player leave and join events
 
     public static ECore INSTANCE;
 
@@ -81,10 +77,12 @@ public class ECore extends JavaPlugin {
         economy.remove(player);
         users.remove(player);
         channels.removePlayerFromAllChannels(player);
+        player.setScoreboard(null);
     }
 
     private void registerRunnables() {
-
+        (new TimerErrorStack()).start();
+        (new TimerNode()).start();
     }
 
     private void registerListeners() {

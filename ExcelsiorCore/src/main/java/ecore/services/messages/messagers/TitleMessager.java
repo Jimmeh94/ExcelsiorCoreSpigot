@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 public class TitleMessager {
 
-    public void sendBoth(Player player, String title, String sub, int fadeIn, int stay, int fadeOut){
+    /*public void sendBoth(Player player, String title, String sub, int fadeIn, int stay, int fadeOut){
         String jsonRepresentation = "{\"text\": \"" + ChatColor.translateAlternateColorCodes('&', title) + "\"}";
         IChatBaseComponent chatBaseComponent = IChatBaseComponent.ChatSerializer.a(jsonRepresentation);
         PacketPlayOutTitle titlePacket = new PacketPlayOutTitle(Type.TITLE.getNmsAction(), chatBaseComponent, fadeIn, stay, fadeOut);
@@ -40,6 +40,10 @@ public class TitleMessager {
         PacketPlayOutTitle.EnumTitleAction getNmsAction() {
             return this.nmsAction;
         }
+    }*/
+
+    public void sendTitle(Player player, String title, String subtitle, int fadeIn, int stay, int fadeOut){
+        player.sendTitle(title, subtitle, fadeIn, stay, fadeOut);
     }
 
 }
