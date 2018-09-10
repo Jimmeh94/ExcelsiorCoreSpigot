@@ -56,8 +56,8 @@ public class ServiceEconomy extends Service<EconomyAccount> {
         eTwo.get().add(amount);
 
         Player pOne = Bukkit.getPlayer(one), pTwo = Bukkit.getPlayer(two);
-        ECore.INSTANCE.getMessager().sendMessage(pOne, ChatColor.GREEN + "You transferred $" + amount + " to " + pTwo.getDisplayName(), Optional.of(ServiceMessager.Prefix.SUCCESS));
-        ECore.INSTANCE.getMessager().sendMessage(pTwo, ChatColor.GREEN + "You received $" + amount + " from " + pOne.getDisplayName(), Optional.of(ServiceMessager.Prefix.SUCCESS));
+        ServiceMessager.sendMessage(pOne, ChatColor.GREEN + "You transferred $" + amount + " to " + pTwo.getDisplayName(), Optional.of(ServiceMessager.Prefix.SUCCESS), true);
+        ServiceMessager.sendMessage(pTwo, ChatColor.GREEN + "You received $" + amount + " from " + pOne.getDisplayName(), Optional.of(ServiceMessager.Prefix.SUCCESS), true);
 
         Bukkit.getPluginManager().callEvent(new ServiceEconomyEvent.ServiceEconomyPaymentEvent(CustomEvent.SERVER_CAUSE, eOne.get(), eTwo.get()));
 

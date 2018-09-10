@@ -31,7 +31,6 @@ public class ECore extends JavaPlugin {
     private Logger logger;
     private ServiceMongoDB mongo;
     private ServiceEconomy economy;
-    private ServiceMessager messager;
     private ServiceNode nodes;
     private ServiceParticles particles;
     private ServiceScoreboard scoreboard;
@@ -47,7 +46,6 @@ public class ECore extends JavaPlugin {
         INSTANCE = this;
         logger = getLogger();
         economy = new ServiceEconomy();
-        messager = new ServiceMessager();
         nodes = new ServiceNode();
         particles = new ServiceParticles();
         scoreboard = new ServiceScoreboard();
@@ -121,10 +119,6 @@ public class ECore extends JavaPlugin {
 
     public ServiceEconomy getEconomy() {
         return economy;
-    }
-
-    public ServiceMessager getMessager() {
-        return messager;
     }
 
     public ServiceNode getNodes() {

@@ -13,28 +13,35 @@ import java.util.UUID;
 
 public class ServiceMessager {
 
-    private TitleMessager titleMessager;
-    private JsonMessager jsonMessager;
-    private String separator;
+    private static TitleMessager titleMessager = new TitleMessager();
+    private static JsonMessager jsonMessager = new JsonMessager();
+    private static String separator;
 
-    public ServiceMessager() {
-        titleMessager = new TitleMessager();
-        jsonMessager = new JsonMessager();
-
+    static {
         separator = ChatColor.GRAY + "";
         for(int i = 0; i < 30; i++){
             separator += ChatColor.BOLD + AltCodes.BULLET_POINT.getSign();
         }
     }
 
-    public void sendErrorStack(ErrorStackEntry entry){
-        for(UUID uuid: entry.getParticipants()){
-            sendMessage(Bukkit.getPlayer(uuid), ChatColor.RED + entry.getError(), Optional.of(Prefix.ERROR));
+    public static void sendMessage(Message message){
+        for(UUID uuid: message.getRecipients()){
+            for(String s: message.getMessages()){
+                sendMessage(Bukkit.getPlayer(uuid), s, message.getPrefix(), false);
+            }
         }
     }
 
-    public void sendMessage(Player player, String text, Optional<Prefix> prefix){
-        player.sendMessage(" ");
+    public static void sendErrorStack(ErrorStackEntry entry){
+        for(UUID uuid: entry.getParticipants()){
+            sendMessage(Bukkit.getPlayer(uuid), ChatColor.RED + entry.getError(), Optional.of(Prefix.ERROR), true);
+        }
+    }
+
+    public static void sendMessage(Player player, String text, Optional<Prefix> prefix, boolean includeEmptyLine){
+        if(includeEmptyLine) {
+            player.sendMessage(" ");
+        }
         if(prefix.isPresent()){
             player.sendMessage(prefix.get().getText() + text);
         } else {
@@ -42,13 +49,13 @@ public class ServiceMessager {
         }
     }
 
-    public void sendLineSeparator(Player player){
+    public static void sendLineSeparator(Player player){
         player.sendMessage(separator);
     }
 
-    public void sendBlankLine(Player player){player.sendMessage(" ");}
+    public static void sendBlankLine(Player player){player.sendMessage(" ");}
 
-    public void broadcastMessage(String text, Optional<Prefix> prefix){
+    public static void broadcastMessage(String text, Optional<Prefix> prefix){
         if(prefix.isPresent()){
             text = prefix.get().getText() + text;
         }
@@ -59,9 +66,9 @@ public class ServiceMessager {
 
     }
 
-    public void sendMessageToChannel(ChatChannel chatChannel, String message, Optional<Prefix> prefix) {
+    public static void sendMessageToChannel(ChatChannel chatChannel, String message, Optional<Prefix> prefix) {
         for(UUID uuid: chatChannel.getMembers()){
-            sendMessage(Bukkit.getPlayer(uuid), message, prefix);
+            sendMessage(Bukkit.getPlayer(uuid), message, prefix, false);
         }
     }
 
@@ -81,11 +88,11 @@ public class ServiceMessager {
         }
     }
 
-    public TitleMessager getTitleMessager() {
+    public static TitleMessager getTitleMessager() {
         return titleMessager;
     }
 
-    public JsonMessager getJsonMessager() {
+    public static JsonMessager getJsonMessager() {
         return jsonMessager;
     }
 }

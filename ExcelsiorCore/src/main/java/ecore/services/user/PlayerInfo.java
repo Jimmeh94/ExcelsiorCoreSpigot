@@ -1,5 +1,6 @@
 package ecore.services.user;
 
+import ecore.services.hotbar.Hotbar;
 import ecore.services.messages.channels.ChatChannel;
 import ecore.services.particles.ServiceParticles;
 import org.bukkit.Bukkit;
@@ -14,6 +15,7 @@ public class PlayerInfo {
     private UUID player;
     private ServiceParticles.ParticleModifier particleModifier;
     private List<String> permissions;
+    private Hotbar currentHotbar;
 
     //This is the channel to type in, not only listen to
     private ChatChannel currentChatChannel;
@@ -60,5 +62,13 @@ public class PlayerInfo {
 
     public void setCurrentChatChannel(ChatChannel currentChatChannel) {
         this.currentChatChannel = currentChatChannel;
+    }
+
+    public void setCurrentHotbar(Hotbar hotbar) {
+        this.currentHotbar = hotbar;
+    }
+
+    public Hotbar getCurrentHotbar() {
+        return currentHotbar;
     }
 }

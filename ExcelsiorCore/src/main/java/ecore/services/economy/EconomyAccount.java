@@ -48,7 +48,7 @@ public class EconomyAccount {
     }
 
     public void printBalance(){
-        ECore.INSTANCE.getMessager().sendMessage(Bukkit.getPlayer(owner),
-                ChatColor.GRAY + "Your account balance is " + ChatColor.GREEN + "$" + balance, Optional.of(ServiceMessager.Prefix.ECO));
+        ServiceMessager.sendMessage(Bukkit.getPlayer(owner),
+                ChatColor.GRAY + "Your account balance is " + ChatColor.GREEN + "$" + balance, Optional.of(ServiceMessager.Prefix.ECO), true);
     }
 }

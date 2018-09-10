@@ -54,7 +54,7 @@ public abstract class ChatChannel {
     public void add(UUID uuid){
         if(!members.contains(uuid)){
             members.add(uuid);
-            ECore.INSTANCE.getMessager().sendMessage(Bukkit.getPlayer(uuid), welcomeMessage, Optional.of(ServiceMessager.Prefix.CHAT));
+            ServiceMessager.sendMessage(Bukkit.getPlayer(uuid), welcomeMessage, Optional.of(ServiceMessager.Prefix.CHAT), true);
             PlayerInfo playerInfo = ECore.INSTANCE.getUsers().findPlayerInfo(uuid).get();
             if(playerInfo.getCurrentChatChannel() == null){
                 playerInfo.setCurrentChatChannel(this);
@@ -64,7 +64,7 @@ public abstract class ChatChannel {
 
     public void sendMessage(String message){
         String prefix = ChatColor.GRAY + "[" + name + ChatColor.GRAY + "] " + ChatColor.GRAY;
-        ECore.INSTANCE.getMessager().sendMessageToChannel(this, prefix + message, Optional.empty());
+        ServiceMessager.sendMessageToChannel(this, prefix + message, Optional.empty());
     }
 
     public List<UUID> getMembers() {
