@@ -33,7 +33,7 @@ public class Message {
         return prefix;
     }
 
-    private static class MessageBuilder{
+    public static class MessageBuilder{
         private List<String> messages;
         private List<UUID> recipients;
         private Optional<ServiceMessager.Prefix> prefix = Optional.empty();
