@@ -4,6 +4,7 @@ import ecore.ECore;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
@@ -51,28 +52,33 @@ public abstract class Hotbar {
         ECore.INSTANCE.getUsers().findPlayerInfo(player.getUniqueId()).get().setCurrentHotbar(this);
     }
 
-    public void handle(int index, Player player) {
+    public void handle(int index, Player player, Action action) {
         if(items.get(index) != null && items.get(index) instanceof ActionItemStack){
-            ((ActionItemStack)items.get(index)).doAction(player);
+            ((ActionItemStack)items.get(index)).doAction(player, action);
         }
     }
 
-    protected class ActionItemStack extends ItemStack {
+    protected static class ActionItemStack extends ItemStack {
 
-        private Consumer<Player> callback;
+        private Callback callback;
 
-        public ActionItemStack(Material type, Consumer<Player> callback) {
+        public ActionItemStack(Material type, Callback callback) {
             this(type, 1, callback);
         }
 
-        public ActionItemStack(Material type, int amount, Consumer<Player> callback) {
+        public ActionItemStack(Material type, int amount, Callback callback) {
             super(type, amount);
 
             this.callback = callback;
         }
 
-        public void doAction(Player player){
-            callback.accept(player);
+        public void doAction(Player player, Action action){
+            callback.action(player, action);
+        }
+
+        public interface Callback{
+
+            void action(Player player, Action action);
         }
     }
 }
