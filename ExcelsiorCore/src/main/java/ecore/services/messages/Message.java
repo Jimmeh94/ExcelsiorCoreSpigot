@@ -9,6 +9,8 @@ import java.util.UUID;
 
 public class Message {
 
+    public static MessageBuilder builder() {return new MessageBuilder();}
+
     private List<String> messages;
     private List<UUID> recipients;
     private Optional<ServiceMessager.Prefix> prefix;
@@ -31,7 +33,7 @@ public class Message {
         return prefix;
     }
 
-    public static class MessageBuilder{
+    private static class MessageBuilder{
         private List<String> messages;
         private List<UUID> recipients;
         private Optional<ServiceMessager.Prefix> prefix = Optional.empty();
