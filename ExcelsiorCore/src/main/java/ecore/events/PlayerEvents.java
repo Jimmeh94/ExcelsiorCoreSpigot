@@ -16,6 +16,10 @@ public class PlayerEvents implements Listener {
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event){
+        if(event.getMessage().charAt(0) == '/'){
+            return;
+        }
+
         event.setCancelled(true);
 
         Optional<PlayerInfo> temp = ECore.INSTANCE.getUsers().findPlayerInfo(event.getPlayer().getUniqueId());
