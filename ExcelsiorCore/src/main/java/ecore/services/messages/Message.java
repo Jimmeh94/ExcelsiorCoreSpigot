@@ -49,7 +49,7 @@ public class Message {
         }
 
         public MessageBuilder addMessageAsChild(ChatColor color, String message){
-            messages.add(color + ChatColor.BOLD.toString() + AltCodes.BULLET_POINT.getSign() + " " + ChatColor.RESET + message);
+            messages.add(color + ChatColor.BOLD.toString() + AltCodes.BULLET_POINT.getSign() + " " + ChatColor.RED.toString() + message);
             return this;
         }
 
