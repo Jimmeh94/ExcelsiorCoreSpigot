@@ -14,7 +14,7 @@ import java.util.UUID;
 public class ServiceMessager {
 
     private static TitleMessager titleMessager = new TitleMessager();
-    private static JsonMessager jsonMessager = new JsonMessager();
+    //private static JsonMessager jsonMessager = new JsonMessager();
     private static String separator;
 
     static {
@@ -93,6 +93,7 @@ public class ServiceMessager {
     }
 
     public static JsonMessager getJsonMessager() {
-        return jsonMessager;
+        //return jsonMessager;
+        return null;
     }
 }
