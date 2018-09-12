@@ -2,7 +2,6 @@ author: Jimmy
 name: ExcelsiorCore
 version: 1.0.0
 main: ecore.ECore
-api-version: 1.13
 depend: [ProtocolLib]
 commands:
 
